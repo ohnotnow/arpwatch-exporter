@@ -52,7 +52,7 @@ jobs:
 
       - name: Build binary
         run: |
-          GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -o arpwatch_exporter$_${{ matrix.binary_suffix }} arpwatch_exporter.go
+          GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -o arpwatch_exporter_${{ matrix.binary_suffix }} arpwatch_exporter.go
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
