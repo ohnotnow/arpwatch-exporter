@@ -1,0 +1,60 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - os: macos-latest
+            arch: arm64
+            goos: darwin
+            goarch: arm64
+            binary_suffix: macos_arm64
+          - os: macos-latest
+            arch: amd64
+            goos: darwin
+            goarch: amd64
+            binary_suffix: macos_amd64
+          - os: ubuntu-latest
+            arch: amd64
+            goos: linux
+            goarch: amd64
+            binary_suffix: linux_amd64
+          - os: ubuntu-latest
+            arch: arm32
+            goos: linux
+            goarch: arm
+            binary_suffix: linux_arm
+          - os: windows-latest
+            arch: amd64
+            goos: windows
+            goarch: amd64
+            binary_suffix: windows_amd64
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.24'
+
+      - name: Build binary
+        run: |
+          GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -o arpwatch_exporter$_${{ matrix.binary_suffix }} arpwatch_exporter.go
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: arpwatch_exporter_${{ matrix.binary_suffix }}
