@@ -22,7 +22,7 @@ A Prometheus exporter that parses ARP data from an `arpwatch`-generated file and
 ### Clone Repository
 
 ```bash
-git clone https://github.com/yourusername/arpwatch-exporter.git
+git clone https://github.com/ohnotnow/arpwatch-exporter.git
 cd arpwatch-exporter
 ```
 
